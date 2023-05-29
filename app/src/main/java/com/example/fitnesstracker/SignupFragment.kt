@@ -45,13 +45,9 @@ class SignUpFragment : Fragment() {
             val insertedUri = requireContext().contentResolver.insert(uri, values)
 
             if (insertedUri != null) {
-                // Registration successful
                 Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
-                // Perform necessary actions after successful registration
             } else {
-                // Registration failed
                 Toast.makeText(requireContext(), "Registration Failed", Toast.LENGTH_SHORT).show()
-                // Handle registration failure
             }
         }
 

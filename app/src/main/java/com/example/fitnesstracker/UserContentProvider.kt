@@ -17,11 +17,9 @@ class UserContentProvider : ContentProvider() {
     override fun onCreate(): Boolean {
         val context = context ?: return false
 
-        // Initialize the UriMatcher
         sUriMatcher.addURI(PROVIDER_NAME, "users", USERS)
         sUriMatcher.addURI(PROVIDER_NAME, "users/#", SINGLE_USER)
 
-        // Create and initialize the database
         val databaseHelper = DatabaseHelper(context)
         db = databaseHelper.writableDatabase
 
@@ -84,7 +82,7 @@ class UserContentProvider : ContentProvider() {
     }
 
     override fun getType(uri: Uri): String? {
-        return null // You can implement this if necessary
+        return null
     }
 
     private fun getTableName(uri: Uri): String {

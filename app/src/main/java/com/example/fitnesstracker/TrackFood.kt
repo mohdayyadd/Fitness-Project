@@ -23,7 +23,6 @@ class TrackFood : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.food_track)
 
-        // Initialize views
         foodNameEditText = findViewById(R.id.foodNameEditText)
         caloriesEditText = findViewById(R.id.caloriesEditText)
         addFoodButton = findViewById(R.id.addFoodButton)
@@ -55,7 +54,6 @@ class TrackFood : AppCompatActivity() {
             totalCalories += calories
             totalCaloriesTextView.text = "Total Calories: $totalCalories"
 
-            // Clear the input fields
             foodNameEditText.text.clear()
             caloriesEditText.text.clear()
         }

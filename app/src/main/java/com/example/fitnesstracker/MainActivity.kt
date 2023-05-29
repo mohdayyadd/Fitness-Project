@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Register the step count broadcast receiver
         val userBtn: Button = findViewById(R.id.userBtn)
         val testBtn: Button = findViewById(R.id.testBtn)
         val stepTV: TextView = findViewById(R.id.stepTV)
@@ -53,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         }
         registerReceiver(stepCountReceiver, IntentFilter("STEP_COUNT_UPDATE"))
 
-        // Start the step count service
         val serviceIntent = Intent(this, StepCountService::class.java)
         startService(serviceIntent)
     }
@@ -61,10 +59,8 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        // Unregister the step count broadcast receiver
         unregisterReceiver(stepCountReceiver)
 
-        // Stop the step count service
         val serviceIntent = Intent(this, StepCountService::class.java)
         stopService(serviceIntent)
     }
