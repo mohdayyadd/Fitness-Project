@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <EditText
             android:id="@+id/foodNameEditText"
             android:layout_width="0dp"
@@ -36,6 +35,18 @@
         android:layout_below="@id/inputLayout"
         android:layout_marginTop="8dp"
         android:text="Add Food" />
+
+    <Button
+        android:id="@+id/updateFoodButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="7dp"
+        android:layout_toRightOf="@id/addFoodButton"
+        android:backgroundTint="#878787"
+        android:text="Update Food" />
 
     <TextView
         android:id="@+id/totalCaloriesTextView"
@@ -70,6 +81,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Calories"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Actions"
                 android:textStyle="bold" />
         </TableRow>
     </TableLayout>

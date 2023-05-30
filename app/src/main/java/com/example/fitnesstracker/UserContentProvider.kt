@@ -1,24 +1,28 @@
 package com.example.fitnesstracker
 
-
+import android.content.ContentProvider
+import android.content.ContentUris
+import android.content.ContentValues
+import android.content.Context
+import android.content.UriMatcher
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.net.Uri
-import android.content.*
 import android.database.sqlite.SQLiteOpenHelper
-
-
-private var sUriMatcher = UriMatcher(UriMatcher.NO_MATCH)
+import android.net.Uri
 
 class UserContentProvider : ContentProvider() {
-
+    private val sUriMatcher = UriMatcher(UriMatcher.NO_MATCH)
     private var db: SQLiteDatabase? = null
 
     override fun onCreate(): Boolean {
         val context = context ?: return false
 
         sUriMatcher.addURI(PROVIDER_NAME, "users", USERS)
-        sUriMatcher.addURI(PROVIDER_NAME, "users/#", SINGLE_USER)
+        sUriMatcher.addURI(PROVIDER_NAME, "food", FOOD)
+        sUriMatcher.addURI(PROVIDER_NAME, "weight", WEIGHT)
+        sUriMatcher.addURI(PROVIDER_NAME, "food/#", FOOD_ID) // Add this line for specific food entry URIs
+        sUriMatcher.addURI(PROVIDER_NAME, "food/#", WEIGHT_ID) // Add this line for specific food entry URIs
+
 
         val databaseHelper = DatabaseHelper(context)
         db = databaseHelper.writableDatabase
@@ -88,7 +92,9 @@ class UserContentProvider : ContentProvider() {
     private fun getTableName(uri: Uri): String {
         return when (sUriMatcher.match(uri)) {
             USERS -> TABLE_USERS
-            SINGLE_USER -> TABLE_USERS
+            FOOD -> TABLE_FOOD
+            WEIGHT -> TABLE_WEIGHT
+            FOOD_ID -> TABLE_FOOD // Handle specific food entry URI
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
     }
@@ -98,34 +104,49 @@ class UserContentProvider : ContentProvider() {
         private const val DATABASE_NAME = "mydatabase.db"
         private const val DATABASE_VERSION = 1
         private const val TABLE_USERS = "users"
+        private const val TABLE_FOOD = "food"
+        private const val TABLE_WEIGHT = "weight"
         private const val USERS = 1
-        private const val SINGLE_USER = 2
+        private const val FOOD = 2
+        private const val WEIGHT = 3
+        private const val FOOD_ID = 4
+        private const val WEIGHT_ID = 4
+    }
+
+    private class DatabaseHelper(context: Context) :
+        SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
+        override fun onCreate(db: SQLiteDatabase) {
+            db.execSQL(
+                "CREATE TABLE $TABLE_USERS (" +
+                        "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "username TEXT," +
+                        "password TEXT" +
+                        ")"
+            )
+
+            db.execSQL(
+                "CREATE TABLE $TABLE_FOOD (" +
+                        "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "food TEXT," +
+                        "calories INTEGER" +
+                        ")"
+            )
+
+            db.execSQL(
+                "CREATE TABLE $TABLE_WEIGHT (" +
+                        "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "weight REAL," +
+                        "sets INTEGER" +
+                        ")"
+            )
+        }
+
+        override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+            db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
+            db.execSQL("DROP TABLE IF EXISTS $TABLE_FOOD")
+            db.execSQL("DROP TABLE IF EXISTS $TABLE_WEIGHT")
+            onCreate(db)
+        }
     }
 }
-
-private class DatabaseHelper(context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
-    override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(
-            "CREATE TABLE $TABLE_USERS (" +
-                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "username TEXT," +
-                    "password TEXT" +
-                    ")"
-        )
-    }
-
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
-        onCreate(db)
-    }
-
-    companion object {
-        private const val DATABASE_NAME = "mydatabase.db"
-        private const val DATABASE_VERSION = 1
-        private const val TABLE_USERS = "users"
-    }
-}
-
-

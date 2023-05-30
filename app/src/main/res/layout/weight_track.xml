@@ -34,7 +34,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/inputLayout"
         android:layout_marginTop="8dp"
-        android:text="Track Exercise" />
+        android:text="Add Exercise" />
+
+    <Button
+        android:id="@+id/updateExerciseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="7dp"
+        android:layout_toRightOf="@id/trackExerciseButton"
+        android:backgroundTint="#FF6200ED"
+        android:text="Update Exercise" />
 
     <TextView
         android:id="@+id/totalSetsTextView"
@@ -69,6 +81,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Number of Sets"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Actions"
                 android:textStyle="bold" />
         </TableRow>
     </TableLayout>
